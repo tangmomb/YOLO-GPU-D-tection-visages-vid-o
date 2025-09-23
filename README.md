@@ -24,7 +24,21 @@
      pip install -r requirements.txt
      ```
 
-4. **Lancer le menu graphique**
+4. **Vérifier que PyTorch utilise bien le GPU**
+
+   - Parfois, `pip` installe la version **CPU uniquement** de PyTorch, même si le fichier `requirements.txt` mentionne une version CUDA (`torch==...+cu118`).
+   - Si YOLO tourne uniquement sur CPU, vous devez réinstaller PyTorch avec CUDA 11.8 manuellement :
+     ```powershell
+     pip uninstall torch torchvision torchaudio -y
+     pip install torch==2.7.1+cu118 torchvision==0.22.1+cu118 torchaudio==2.7.1+cu118 --index-url https://download.pytorch.org/whl/cu118
+     ```
+   - Pour vérifier que le GPU est bien détecté par PyTorch :
+     ```powershell
+     python -c "import torch; print('Version:', torch.__version__); print('CUDA:', torch.version.cuda); print('GPU dispo:', torch.cuda.is_available())"
+     ```
+   - Si `torch.cuda.is_available()` renvoie `True`, YOLO pourra utiliser votre GPU.
+
+5. **Lancer le menu graphique**
    - Double-cliquez sur le fichier `Launcher.bat`.
    - Un menu s'ouvre pour lancer les différents scripts du projet.
 
@@ -65,4 +79,4 @@
 
 - Assurez-vous d'utiliser Python 3.10 ou 3.11 pour une compatibilité optimale avec les dépendances.
 - Les scripts utilisent Tkinter pour l'interface graphique et DeepFace/YOLO pour la détection et la reconnaissance.
-- Vous pouvez créer un moèdle YOLO custom en suivant ce super tuto : https://youtu.be/r0RspiLG260?si=IBob4Px6ozpPJsO3
+- Vous pouvez créer un modèle YOLO custom en suivant ce super tuto : https://youtu.be/r0RspiLG260?si=IBob4Px6ozpPJsO3
